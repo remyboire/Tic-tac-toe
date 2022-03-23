@@ -124,31 +124,31 @@ function CPUHandler() {
 
 	if (isPlayerX) var CPUMoves = Xmoves
 	else CPUMoves = Omoves
+
 	// Pour chaque combinaison gagnante
 	for (const combinaison of winingCombinaisons) {
-		// Pour chaque coup joué
 		var matches = 0
-
+		// Pour chaque coup joué
 		for (var i = 0; i < CPUMoves.length; i++) {
 			// On compare la combinaison avec le coup joué
 			if (combinaison.find((element) => element == CPUMoves[i])) {
-				// Si match, c'est cool
 				matches++
-				console.log('match!')
-				// Si on obtient 2 matches, on tente de jouer le coup gagnant
+				// If we have two match, try to play the third move
 				if (matches == 2) {
-					console.log('two match!')
-					move = combinaison.filter((x) => CPUMoves.indexOf(x) === -1)
-					return playMove(move)
+					// Extracting unplayed move
+					var b = new Set(CPUMoves)
+					var moveFound = [...combinaison].filter((x) => !b.has(x))
+					moveFound = parseInt(moveFound)
+					// If unplayed move is possible, play it
+					if (possibleMoves.includes(move)) {
+						move = moveFound
+						return playMove(move)
+					}
 				}
-
-				// if (!Xmoves.concat(Omoves).includes(i)) possibleMoves.push(i)
-				// console.log(combinaison)
-				// console.log(matches)
-			} else return playMove(move)
+			}
 		}
-		return playMove(move)
 	}
+	playMove(move)
 
 	// Choose a random number in possible moves
 
