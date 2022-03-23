@@ -119,41 +119,50 @@ function CPUHandler() {
 	// Determine possible moves, which are moves that are not in Xmoves, neither in Omoves
 	var possibleMoves = new Array()
 	for (var i = 1; i < 10; i++) if (!Xmoves.concat(Omoves).includes(i)) possibleMoves.push(i)
+	console.log('possible moves' + possibleMoves)
 	// First, find a move randomly
-	var move = possibleMoves[Math.floor(Math.random() * possibleMoves.length)]
 
-	if (isPlayerX) var CPUMoves = Xmoves
-	else CPUMoves = Omoves
+	if (isPlayerX) {
+		playMove(determineMove(Xmoves, possibleMoves))
+	} else {
+		playMove(determineMove(Omoves, possibleMoves))
+	}
 
-	// Pour chaque combinaison gagnante
-	for (const combinaison of winingCombinaisons) {
-		var matches = 0
-		// Pour chaque coup joué
-		for (var i = 0; i < CPUMoves.length; i++) {
-			// On compare la combinaison avec le coup joué
-			if (combinaison.find((element) => element == CPUMoves[i])) {
-				matches++
-				// If we have two match, try to play the third move
-				if (matches == 2) {
-					// Extracting unplayed move
-					var b = new Set(CPUMoves)
-					var moveFound = [...combinaison].filter((x) => !b.has(x))
-					moveFound = parseInt(moveFound)
-					// If unplayed move is possible, play it
-					if (possibleMoves.includes(move)) {
-						move = moveFound
-						return playMove(move)
+	function determineMove(moveSet, possibleMoves) {
+		var moveFound = possibleMoves[Math.floor(Math.random() * possibleMoves.length)]
+		console.log('random move ' + moveFound)
+		// Pour chaque combinaison gagnante
+		for (const combinaison of winingCombinaisons) {
+			var matches = 0
+			// Pour chaque coup joué
+			for (var i = 0; i < moveSet.length; i++) {
+				// On compare la combinaison avec le coup joué
+				if (combinaison.find((element) => element == moveSet[i])) {
+					matches++
+					// If we have two match, try to play the third move
+					if (matches == 2) {
+						// Extracting unplayed move
+						var b = new Set(moveSet)
+						var winingMove = [...combinaison].filter((x) => !b.has(x))
+						var winingMove = parseInt(moveFound)
+						// If unplayed move is possible, play it
+						if (possibleMoves.includes(winingMove)) {
+							console.log('wining move ' + winingMove)
+							return winingMove
+						}
 					}
 				}
 			}
 		}
+		return moveFound
 	}
-	playMove(move)
+	// playMove(move)
 
 	// Choose a random number in possible moves
 
 	// Play the move
 	function playMove(move) {
+		console.log('playing move ' + move)
 		document.querySelector("[data-value='" + move + "']").classList.add('played')
 		if (isPlayerX) document.querySelector("[data-value='" + move + "']").classList.add('X')
 		else document.querySelector("[data-value='" + move + "']").classList.add('O')

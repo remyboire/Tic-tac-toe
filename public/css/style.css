@@ -238,6 +238,7 @@ table {
   font-weight: 700;
   visibility: hidden;
   text-transform: uppercase;
+  opacity: 0.5;
 }
 .banner__wrapper {
   background-color: #0f191e;
