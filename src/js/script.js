@@ -67,11 +67,15 @@ cards.addEventListener('click', (e) => {
 
 logo.addEventListener('click', quit)
 
-button_x_picked.addEventListener('click', () => {
+button_x_picked.addEventListener('click', (element) => {
 	isHumanTurn = true
+	element.target.classList.add('activated')
+	button_o_picked.classList.remove('activated')
 })
-button_o_picked.addEventListener('click', () => {
+button_o_picked.addEventListener('click', (element) => {
 	isHumanTurn = false
+	element.target.classList.add('activated')
+	button_x_picked.classList.remove('activated')
 })
 for (const button of button_launch) {
 	button.addEventListener('click', (element) => {
@@ -119,18 +123,24 @@ function CPUHandler() {
 	// Determine possible moves, which are moves that are not in Xmoves, neither in Omoves
 	var possibleMoves = new Array()
 	for (var i = 1; i < 10; i++) if (!Xmoves.concat(Omoves).includes(i)) possibleMoves.push(i)
-	console.log('possible moves' + possibleMoves)
 	// First, find a move randomly
+	var choosenMove = possibleMoves[Math.floor(Math.random() * possibleMoves.length)]
 
 	if (isPlayerX) {
-		playMove(determineMove(Xmoves, possibleMoves))
+		// determine if opponent can win
+		determineMove(Omoves, possibleMoves)
+		// determine if CPU can win
+		determineMove(Xmoves, possibleMoves)
+		playMove(choosenMove)
 	} else {
-		playMove(determineMove(Omoves, possibleMoves))
+		// determine if opponent can win
+		determineMove(Xmoves, possibleMoves)
+		// determine if CPU can win
+		determineMove(Omoves, possibleMoves)
+		playMove(choosenMove)
 	}
 
 	function determineMove(moveSet, possibleMoves) {
-		var moveFound = possibleMoves[Math.floor(Math.random() * possibleMoves.length)]
-		console.log('random move ' + moveFound)
 		// Pour chaque combinaison gagnante
 		for (const combinaison of winingCombinaisons) {
 			var matches = 0
@@ -144,17 +154,16 @@ function CPUHandler() {
 						// Extracting unplayed move
 						var b = new Set(moveSet)
 						var winingMove = [...combinaison].filter((x) => !b.has(x))
-						var winingMove = parseInt(moveFound)
+						var winingMove = parseInt(winingMove)
 						// If unplayed move is possible, play it
 						if (possibleMoves.includes(winingMove)) {
 							console.log('wining move ' + winingMove)
-							return winingMove
+							return (choosenMove = winingMove)
 						}
 					}
 				}
 			}
 		}
-		return moveFound
 	}
 	// playMove(move)
 
@@ -210,7 +219,6 @@ function endOfTurn() {
 	}
 }
 function changePlayer() {
-	console.log('change player')
 	isPlayerX = !isPlayerX
 	board.classList.toggle('O-turn')
 	board.classList.toggle('X-turn')

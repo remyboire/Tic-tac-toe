@@ -26,4 +26,8 @@ $radius: 10px;
 		transform: translate3d(0, 6px, 0);
 		box-shadow: 0 0 0 $color-dark;
 	}
+	&.activated {
+		transform: translate3d(0, 6px, 0);
+		box-shadow: 0 0 0 $color-dark;
+	}
 }
