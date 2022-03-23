@@ -1,0 +1,9 @@
+.menu {
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	width: 100%;
+	max-width: 460px;
+	visibility: hidden;
+}

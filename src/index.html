@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png" />
+		<link rel="stylesheet" href="css/style.css" />
+
+		<title>Frontend Mentor | Tic tac toe</title>
+	</head>
+	<body>
+		<main>
+			<div class="menu visible">
+				<img class="menu__logo" src="./images/logo.svg" alt="" />
+				<h1>Pick player 1's mark</h1>
+				<div><button class="button__x-picked">X</button><button class="button__o-picked">O</button></div>
+				<p>remember : X goes first</p>
+				<button class="button__launch" data-opponent="CPU">New game (vs cpu)</button
+				><button data-opponent="human" class="button__launch">new game (vs player)</button>
+			</div>
+			<div class="board">
+				<div class="board__header">
+					<img class="board__logo" src="./images/logo.svg" alt="" />
+					<div class="board__turn">TURN</div>
+					<button class="board__restart button__restart"></button>
+				</div>
+				<div class="board__cards">
+					<input type="button" class="board__card" data-value="1" />
+					<input type="button" class="board__card" data-value="2" />
+					<input type="button" class="board__card" data-value="3" />
+					<input type="button" class="board__card" data-value="4" />
+					<input type="button" class="board__card" data-value="5" />
+					<input type="button" class="board__card" data-value="6" />
+					<input type="button" class="board__card" data-value="7" />
+					<input type="button" class="board__card" data-value="8" />
+					<input type="button" class="board__card" data-value="9" />
+				</div>
+				<div class="board__footer">
+					<div class="board__score board__score--X">
+						<label for="board__score--X">X (YOU)</label>
+						<output id="board__score--X" class="" value="0">0</output>
+					</div>
+					<div class="board__score board__score--tie">
+						<label for="board__score--tie">TIES</label>
+						<output id="board__score--tie" class="" value="0">0</output>
+					</div>
+					<div class="board__score board__score--O">
+						<label for="board__score--O">O (CPU)</label>
+						<output id="board__score--O" class="" value="0">0</output>
+					</div>
+				</div>
+			</div>
+
+			<div class="banner banner__winner">
+				<div class="banner__wrapper">
+					<p class="">PLAYER 1 WINS</p>
+					<div class="takes">
+						<div><img src="./images/icon-x-win.svg" alt="" srcset="" /></div>
+						Takes the round
+					</div>
+					<div><button class="button__quit">quit</button> <button class="button__restart--game o-color">next round</button></div>
+				</div>
+			</div>
+			<div class="banner banner__tie">
+				<div class="banner__wrapper">
+					<p class="">it's a tie</p>
+					<div><button class="button__quit">quit</button> <button class="button__restart--game o-color">next round</button></div>
+				</div>
+			</div>
+			<div class="banner banner__restart">
+				<div class="banner__wrapper">
+					<div class="takes">RESTART GAME?</div>
+					<div>
+						<button class="button__cancel">No, cancel</button>
+						<button class="button__restart--game o-color">yes, restart</button>
+					</div>
+				</div>
+			</div>
+		</main>
+
+		<!-- <footer>
+			<div class="attribution">
+				Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. Coded by
+				<a href="https://www.remyboire.fr" target="_blank">Rémy Boiré</a>.
+			</div>
+		</footer> -->
+		<script src="js/script.js"></script>
+	</body>
+</html>

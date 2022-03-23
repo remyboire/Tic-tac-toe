@@ -1,0 +1,63 @@
+.board {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	width: 100%;
+	max-width: 460px;
+	visibility: hidden;
+	// opacity: 0.7;
+
+	&__cards {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		grid-column-gap: 20px;
+		grid-row-gap: 25px;
+	}
+
+	&__card {
+		border-radius: $radius;
+		aspect-ratio: 1;
+		background-color: $blue-light;
+		box-shadow: 0 10px 0 $blue-dark;
+		background-size: 45%;
+		cursor: pointer;
+
+		border: none;
+		@include transitions;
+
+		&:hover {
+			transform: translate3d(0, 5px, 0);
+			box-shadow: 0 5px 0 $blue-dark;
+		}
+		&:active {
+			transform: translate3d(0, 8px, 0);
+			box-shadow: 0 2px 0 $blue-dark;
+		}
+
+		&.played {
+			cursor: not-allowed;
+			transform: translate3d(0, 8px, 0);
+			box-shadow: 0 2px 0 $blue-dark;
+			&.O {
+				background: $oColor url('../images/icon-o-win.svg') no-repeat center;
+				background-size: 50%;
+			}
+			&.X {
+				background: $xColor url('../images/icon-X-win.svg') no-repeat center;
+				background-size: 50%;
+			}
+		}
+	}
+	&.O-turn {
+		& .board__card:not(.played):hover {
+			background: $blue-light url('../images/icon-o-outline.svg') no-repeat center;
+			background-size: 55%;
+		}
+	}
+	&.X-turn {
+		& .board__card:not(.played):hover {
+			background: $blue-light url('../images/icon-x-outline.svg') no-repeat center;
+			background-size: 55%;
+		}
+	}
+}
