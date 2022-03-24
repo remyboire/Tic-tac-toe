@@ -5,7 +5,28 @@
 	width: 100%;
 	max-width: min(90vw, 30rem);
 	visibility: hidden;
+	position: relative;
 
+	// &::after {
+	// 	content: 'CPU is thinking...';
+	// 	width: 100%;
+	// 	position: absolute;
+	// 	bottom: -2.5rem;
+	// 	text-align: center;
+	// 	opacity: 0;
+	// 	transition: opacity 1000ms cubic-bezier(0.19, 1, 0.22, 1);
+	// }
+	// // opacity:
+
+	// &.thinking::after {
+	// 	content: 'CPU is thinking...';
+	// 	width: 100%;
+	// 	position: absolute;
+	// 	bottom: -2.5rem;
+	// 	text-align: center;
+	// 	opacity: 1;
+	// 	transition: opacity 1000ms cubic-bezier(0.19, 1, 0.22, 1);
+	// }
 	// opacity: 0.7;
 
 	&__cards {
@@ -31,12 +52,24 @@
 			transform: translate3d(0, 8px, 0);
 			box-shadow: 0 2px 0 $blue-dark;
 			&.O {
-				background: $oColor url('../images/icon-o-win.svg') no-repeat center;
+				background: $blue-light url('../images/icon-o.svg') no-repeat center;
 				background-size: 50%;
 			}
 			&.X {
-				background: $xColor url('../images/icon-x-win.svg') no-repeat center;
+				background: $blue-light url('../images/icon-x.svg') no-repeat center;
 				background-size: 50%;
+			}
+			&.wins {
+				&.O {
+					background: $oColor url('../images/icon-o-win.svg') no-repeat center;
+					background-size: 50%;
+					transition: background-color cubic-bezier(0.075, 0.82, 0.165, 1) 500ms;
+				}
+				&.X {
+					background: $xColor url('../images/icon-x-win.svg') no-repeat center;
+					background-size: 50%;
+					transition: background-color cubic-bezier(0.075, 0.82, 0.165, 1) 500ms;
+				}
 			}
 		}
 	}
@@ -52,7 +85,7 @@
 			background-size: 55%;
 		}
 	}
-	&.playable .board__card {
+	&.playable .board__card:not(.played) {
 		&:hover {
 			transform: translate3d(0, 5px, 0);
 			box-shadow: 0 5px 0 $blue-dark;

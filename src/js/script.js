@@ -16,6 +16,7 @@ let menu = document.querySelector('.menu')
 let logo = document.querySelector('.board__logo')
 
 let board = document.querySelector('.board')
+let board_turn = document.querySelector('.board__turn')
 
 let cards = document.querySelector('.board__cards')
 let card = document.querySelectorAll('.board__card')
@@ -73,7 +74,7 @@ var winingCombinaisons = [
 	[2, 5, 8],
 	[3, 6, 9],
 	[1, 5, 9],
-	[3, 5, 7],
+	[7, 5, 3],
 ]
 
 cards.addEventListener('click', (e) => {
@@ -190,6 +191,9 @@ function CPUHandler() {
 		// Store move played in player's moves
 		if (isPlayerX) Xmoves.push(move)
 		else Omoves.push(move)
+
+		board_turn.classList.remove('thinking')
+
 		endOfTurn()
 	}
 }
@@ -206,13 +210,7 @@ function endOfTurn() {
 	// Compare played moves
 	for (const combinaison of winingCombinaisons) {
 		if (combinaison.every((moves) => playerMoves.includes(moves))) {
-			// Si player win
-			// wins ++
-			if (isPlayerX) Xwins++
-			else Owins++
-			showBanner('winner')
-			changePlayer()
-			return updateScores()
+			return weHaveAWinner(combinaison)
 		}
 	}
 	// Check for tie, if all card have been played, this is a tie
@@ -227,10 +225,35 @@ function endOfTurn() {
 		return showBanner('tie')
 	} else {
 		changePlayer()
-		// If CPU play and it's his turn, he plays
-		if (vsCPU && !isHumanTurn) window.setTimeout(CPUHandler, 1000)
+		// If CPU play and it's his turn, he plays, waiting between 500 an 1000ms
+		if (vsCPU && !isHumanTurn) {
+			board_turn.classList.add('thinking')
+			window.setTimeout(CPUHandler, Math.floor(Math.random() * (1500 - 750)) + 750)
+		}
 	}
 }
+
+function weHaveAWinner(combinaison) {
+	// If we have a winner
+	// highlight wining cards
+	var i = 1
+	for (const winingCards of combinaison) {
+		setTimeout(function () {
+			document.querySelector("[data-value='" + winingCards + "']").classList.add('wins')
+		}, 250 * i)
+		++i
+	}
+	setTimeout(function () {
+		// Si player win
+		// wins ++
+		if (isPlayerX) Xwins++
+		else Owins++
+		showBanner('winner')
+		changePlayer()
+		return updateScores()
+	}, 1000)
+}
+
 function changePlayer() {
 	isPlayerX = !isPlayerX
 	board.classList.toggle('O-turn')
@@ -270,6 +293,7 @@ function restart() {
 	Omoves = []
 	card.forEach((card) => {
 		card.classList.remove('played')
+		card.classList.remove('wins')
 		card.classList.remove('X')
 		card.classList.remove('O')
 	})
@@ -287,6 +311,7 @@ function launch(data_opponent) {
 	Omoves = []
 	card.forEach((card) => {
 		card.classList.remove('played')
+		card.classList.remove('wins')
 		card.classList.remove('X')
 		card.classList.remove('O')
 	})

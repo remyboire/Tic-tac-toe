@@ -20,6 +20,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+
 		&::before {
 			display: inline-block;
 			content: '';
@@ -33,13 +34,33 @@
 	&.O-turn {
 		& .board__turn::before {
 			mask: url('../images/icon-o.svg') no-repeat 50% 50%;
+			-webkit-mask: url('../images/icon-o.svg') no-repeat 50% 50%;
 			animation: o-in cubic-bezier(0.23, 1, 0.32, 1) 200ms;
+		}
+		& .board__turn.thinking::before {
+			animation: thinking;
+			animation-duration: 350ms;
+			animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
+			animation-iteration-count: infinite;
+			animation-direction: alternate-reverse;
+			animation-fill-mode: both;
+			animation-play-state: running;
 		}
 	}
 	&.X-turn {
 		& .board__turn::before {
 			mask: url('../images/icon-x.svg') no-repeat 50% 50%;
+			-webkit-mask: url('../images/icon-x.svg') no-repeat 50% 50%;
 			animation: x-in cubic-bezier(0.23, 1, 0.32, 1) 200ms;
+		}
+		& .board__turn.thinking::before {
+			animation: thinking;
+			animation-duration: 350ms;
+			animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
+			animation-iteration-count: infinite;
+			animation-direction: alternate-reverse;
+			animation-fill-mode: both;
+			animation-play-state: running;
 		}
 	}
 
@@ -80,5 +101,13 @@
 	}
 	100% {
 		width: 1rem;
+	}
+}
+@keyframes thinking {
+	0% {
+		transform: scale(1);
+	}
+	100% {
+		transform: scale(1.2);
 	}
 }
