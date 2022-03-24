@@ -17,7 +17,7 @@ body {
 	line-height: 1.8rem;
 	color: $grey;
 	background-color: $blue;
-	//	background: url('../images/2- desktop-game-start.png') center no-repeat;
+	// background: url('../images/1- desktop-new-game-menu.png') center no-repeat;
 }
 
 main {
@@ -25,4 +25,8 @@ main {
 	justify-content: center;
 	align-items: center;
 	min-height: 100vh;
+}
+.visible {
+	visibility: visible;
+	opacity: 1;
 }

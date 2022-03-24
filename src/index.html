@@ -13,11 +13,31 @@
 		<main>
 			<div class="menu visible">
 				<img class="menu__logo" src="./images/logo.svg" alt="" />
-				<h1>Pick player 1's mark</h1>
-				<div><button class="button__x-picked activated">X</button><button class="button__o-picked">O</button></div>
-				<p>remember : X goes first</p>
-				<button class="button__launch" data-opponent="CPU">New game (vs cpu)</button
-				><button data-opponent="human" class="button__launch">new game (vs player)</button>
+				<div class="selectMark">
+					<h1>Pick player 1's mark</h1>
+					<div class="selectMark__background">
+						<div class="selectMark__wrapper x-picked">
+							<div class="selectMark--x">
+								<svg id="icon-x-default" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+									<path
+										d="M15.002 1.147 32 18.145 48.998 1.147a3 3 0 0 1 4.243 0l9.612 9.612a3 3 0 0 1 0 4.243L45.855 32l16.998 16.998a3 3 0 0 1 0 4.243l-9.612 9.612a3 3 0 0 1-4.243 0L32 45.855 15.002 62.853a3 3 0 0 1-4.243 0L1.147 53.24a3 3 0 0 1 0-4.243L18.145 32 1.147 15.002a3 3 0 0 1 0-4.243l9.612-9.612a3 3 0 0 1 4.243 0Z"
+										fill-rule="evenodd"
+									/>
+								</svg>
+							</div>
+							<div class="selectMark--o">
+								<svg id="icon-o-default" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+									<path
+										d="M32 0c17.673 0 32 14.327 32 32 0 17.673-14.327 32-32 32C14.327 64 0 49.673 0 32 0 14.327 14.327 0 32 0Zm0 18.963c-7.2 0-13.037 5.837-13.037 13.037 0 7.2 5.837 13.037 13.037 13.037 7.2 0 13.037-5.837 13.037-13.037 0-7.2-5.837-13.037-13.037-13.037Z"
+									/>
+								</svg>
+							</div>
+						</div>
+					</div>
+					<p>remember : X goes first</p>
+				</div>
+				<button class="button__launch o-color" data-opponent="CPU">New game (vs cpu)</button>
+				<button class="button__launch x-color" data-opponent="human">new game (vs player)</button>
 			</div>
 			<div class="board">
 				<div class="board__header">
@@ -54,17 +74,22 @@
 
 			<div class="banner banner__winner">
 				<div class="banner__wrapper">
-					<p class="">PLAYER 1 WINS</p>
-					<div class="takes">
-						<div><img src="./images/icon-x-win.svg" alt="" srcset="" /></div>
-						Takes the round
+					<div class="whoWins">
+						<div class="humanWins"><h2>Yes, you win !</h2></div>
+						<div class="cpuWins"><h2>Oh no, you lost...</h2></div>
+						<div class="playerOneWins"><h2>PLAYER 1 WINS</h2></div>
+						<div class="playerTwoWins"><h2>PLAYER 2 WINS</h2></div>
+					</div>
+					<div class="whoTakes">
+						<div class="x-takes">Takes the round</div>
+						<div class="o-takes">Takes the round</div>
 					</div>
 					<div><button class="button__quit">quit</button> <button class="button__restart--game o-color">next round</button></div>
 				</div>
 			</div>
 			<div class="banner banner__tie">
 				<div class="banner__wrapper">
-					<p class="">it's a tie</p>
+					<div><h2 class="">it's a tie</h2></div>
 					<div><button class="button__quit">quit</button> <button class="button__restart--game o-color">next round</button></div>
 				</div>
 			</div>

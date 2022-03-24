@@ -13,6 +13,14 @@
 	font-weight: 700;
 	visibility: hidden;
 	text-transform: uppercase;
+	overflow: hidden;
+	opacity: 0;
+
+	&.visible {
+		opacity: 1;
+		transition: opacity ease 0.5s;
+	}
+
 	&__wrapper {
 		background-color: $blue-dark;
 		width: 100%;
@@ -21,9 +29,64 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
+		gap: 1.5rem;
 		padding: 5rem;
 		max-height: 30vh;
+		transform: translate3d(-100%, 0, 0);
+		transition: all cubic-bezier(0.165, 0.84, 0.44, 1) 1s;
 
+		& .whoWins {
+			font-size: 1.5rem;
+			line-height: 1.5rem;
+			font-weight: 400;
+			& > * {
+				opacity: 0;
+				visibility: hidden;
+				display: none;
+				&.visible {
+					opacity: 1;
+					visibility: visible;
+					display: inherit;
+				}
+			}
+		}
+		& .whoTakes {
+			& .x-takes {
+				color: $xColor;
+				&::before {
+					content: url('../images/icon-x.svg');
+					font-size: 5rem;
+					width: 5rem;
+					margin-right: 2rem;
+				}
+			}
+			& .o-takes {
+				color: $oColor;
+				&::before {
+					content: url('../images/icon-o.svg');
+					font-size: 5rem;
+					width: 5rem;
+					margin-right: 2rem;
+				}
+			}
+
+			& > * {
+				opacity: 0;
+				visibility: hidden;
+				display: none;
+				&.visible {
+					opacity: 1;
+					visibility: visible;
+					display: flex;
+					align-items: center;
+				}
+			}
+		}
+
+		& > div {
+			transform: translate3d(-200%, 0, 0);
+			opacity: 0;
+		}
 		& .takes {
 			display: flex;
 			gap: 1.5rem;
@@ -37,20 +100,30 @@
 		& button {
 			margin-inline: 0.35rem;
 		}
-		& .result {
-			display: none;
-			visibility: visible;
-			&__x-wins {
-				color: $xColor;
-			}
-			&__o-wins {
-				color: $oColor;
-			}
-			&__tie {
-				color: $grey;
+	}
+	&.visible .banner {
+		&__wrapper {
+			transform: translate3d(0, 0, 0);
+			transition: all cubic-bezier(0.165, 0.84, 0.44, 1) 1s;
+
+			& > div {
+				animation: transition 1s ease-in-out forwards;
+				width: 100%;
+				display: flex;
+				justify-content: center;
+				&:nth-child(1) {
+					animation-delay: 0.25s;
+				}
+				&:nth-child(2) {
+					animation-delay: 0.5s;
+				}
+				&:nth-child(3) {
+					animation-delay: 0.75s;
+				}
 			}
 		}
 	}
+
 	&__winner {
 		visibility: hidden;
 	}
@@ -58,6 +131,26 @@
 		visibility: hidden;
 	}
 }
-.visible {
-	visibility: visible;
+
+@keyframes transition {
+	0% {
+		transform: translate3d(-200%, 0, 0);
+		opacity: 0;
+	}
+	25% {
+		transform: translate3d(10%, 0, 0);
+	}
+	55% {
+		transform: translate3d(-3%, 0, 0);
+	}
+	65% {
+		transform: translate3d(1%, 0, 0);
+	}
+	80% {
+		transform: translate3d(-0.25%, 0, 0);
+	}
+	100% {
+		transform: translate3d(0, 0, 0);
+		opacity: 1;
+	}
 }

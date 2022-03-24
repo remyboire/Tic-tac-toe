@@ -21,6 +21,9 @@ let cards = document.querySelector('.board__cards')
 let card = document.querySelectorAll('.board__card')
 
 let Xscore = document.querySelector('.board__score--X output')
+let XscoreLabel = document.querySelector('.board__score--X label')
+let OscoreLabel = document.querySelector('.board__score--O label')
+
 let Oscore = document.querySelector('.board__score--O output')
 let TieScore = document.querySelector('.board__score--tie output')
 
@@ -29,13 +32,25 @@ let banner_winner = document.querySelector('.banner__winner')
 let banner_restart = document.querySelector('.banner__restart')
 let banner_tie = document.querySelector('.banner__tie')
 
+let banner_whowins = document.querySelectorAll('.whoWins div')
+let human_wins = document.querySelector('.humanWins')
+let cpu_wins = document.querySelector('.cpuWins')
+let player1_wins = document.querySelector('.playerOneWins')
+let player2_wins = document.querySelector('.playerTwoWins')
+
+let banner_whotakes = document.querySelectorAll('.whoTakes div')
+let x_takes = document.querySelector('.x-takes')
+let o_takes = document.querySelector('.o-takes')
+
 let button_launch = document.querySelectorAll('.button__launch')
 let button_quit = document.querySelectorAll('.button__quit')
 let button_cancel = document.querySelectorAll('.button__cancel')
 let button_restart = document.querySelectorAll('.button__restart')
 let restart_game = document.querySelectorAll('.button__restart--game')
-let button_x_picked = document.querySelector('.button__x-picked')
-let button_o_picked = document.querySelector('.button__o-picked')
+
+let selectMark = document.querySelector('.selectMark__wrapper')
+let selectMark_x = document.querySelector('.selectMark--x')
+let selectMark_o = document.querySelector('.selectMark--o')
 
 var Xwins = 0
 var Owins = 0
@@ -43,6 +58,7 @@ var Ties = 0
 
 var opponent = 'human'
 var isPlayerX = true
+var playerOneisX = true
 var vsCPU = false
 var isHumanTurn = true
 
@@ -67,15 +83,15 @@ cards.addEventListener('click', (e) => {
 
 logo.addEventListener('click', quit)
 
-button_x_picked.addEventListener('click', (element) => {
-	isHumanTurn = true
-	element.target.classList.add('activated')
-	button_o_picked.classList.remove('activated')
+selectMark_x.addEventListener('click', () => {
+	playerOneisX = true
+	selectMark.classList.add('x-picked')
+	selectMark.classList.remove('o-picked')
 })
-button_o_picked.addEventListener('click', (element) => {
-	isHumanTurn = false
-	element.target.classList.add('activated')
-	button_x_picked.classList.remove('activated')
+selectMark_o.addEventListener('click', () => {
+	playerOneisX = false
+	selectMark.classList.add('o-picked')
+	selectMark.classList.remove('x-picked')
 })
 for (const button of button_launch) {
 	button.addEventListener('click', (element) => {
@@ -157,7 +173,6 @@ function CPUHandler() {
 						var winingMove = parseInt(winingMove)
 						// If unplayed move is possible, play it
 						if (possibleMoves.includes(winingMove)) {
-							console.log('wining move ' + winingMove)
 							return (choosenMove = winingMove)
 						}
 					}
@@ -165,13 +180,9 @@ function CPUHandler() {
 			}
 		}
 	}
-	// playMove(move)
-
-	// Choose a random number in possible moves
 
 	// Play the move
 	function playMove(move) {
-		console.log('playing move ' + move)
 		document.querySelector("[data-value='" + move + "']").classList.add('played')
 		if (isPlayerX) document.querySelector("[data-value='" + move + "']").classList.add('X')
 		else document.querySelector("[data-value='" + move + "']").classList.add('O')
@@ -189,6 +200,8 @@ function endOfTurn() {
 	if (isPlayerX) var playerMoves = Xmoves
 	else playerMoves = Omoves
 
+	if (vsCPU) board.classList.toggle('playable')
+
 	// For each wining combinaisons possible,
 	// Compare played moves
 	for (const combinaison of winingCombinaisons) {
@@ -197,9 +210,9 @@ function endOfTurn() {
 			// wins ++
 			if (isPlayerX) Xwins++
 			else Owins++
+			showBanner('winner')
 			changePlayer()
-			updateScores()
-			return showBanner('winner')
+			return updateScores()
 		}
 	}
 	// Check for tie, if all card have been played, this is a tie
@@ -209,13 +222,13 @@ function endOfTurn() {
 	}
 	if (count == card.length) {
 		Ties++
+		changePlayer()
 		updateScores()
-		showBanner('tie')
-		return changePlayer()
+		return showBanner('tie')
 	} else {
 		changePlayer()
 		// If CPU play and it's his turn, he plays
-		if (vsCPU && !isHumanTurn) CPUHandler()
+		if (vsCPU && !isHumanTurn) window.setTimeout(CPUHandler, 1000)
 	}
 }
 function changePlayer() {
@@ -231,6 +244,26 @@ function updateScores() {
 	TieScore.value = Ties
 }
 
+function updateScoresLabels() {
+	if (vsCPU)
+		if (playerOneisX) {
+			XscoreLabel.innerHTML = 'X (YOU)'
+			OscoreLabel.innerHTML = 'O (CPU)'
+		} else {
+			XscoreLabel.innerHTML = 'X (CPU)'
+			OscoreLabel.innerHTML = 'O (YOU)'
+		}
+
+	if (!vsCPU)
+		if (playerOneisX) {
+			XscoreLabel.innerHTML = 'X (P1)'
+			OscoreLabel.innerHTML = 'O (P2)'
+		} else {
+			XscoreLabel.innerHTML = 'X (P2)'
+			OscoreLabel.innerHTML = 'O (P1)'
+		}
+}
+
 function restart() {
 	// Set values to 0
 	Xmoves = []
@@ -240,11 +273,13 @@ function restart() {
 		card.classList.remove('X')
 		card.classList.remove('O')
 	})
-	if (opponent == 'CPU' && isHumanTurn == false) CPUHandler()
+	if (opponent == 'CPU' && isHumanTurn == false) {
+		window.setTimeout(CPUHandler, 1000)
+	}
 }
 function launch(data_opponent) {
-	opponent = data_opponent
 	board.classList.add('visible')
+	board.classList.add('playable')
 	board.classList.remove('O-turn')
 	board.classList.add('X-turn')
 	isPlayerX = true
@@ -258,10 +293,18 @@ function launch(data_opponent) {
 	Xwins = 0
 	Owins = 0
 	Ties = 0
-	updateScores()
-	menu.classList.remove('visible')
+
+	opponent = data_opponent
 	if (opponent == 'CPU') vsCPU = true
-	if (opponent == 'CPU' && isHumanTurn == false) CPUHandler()
+	else vsCPU = false
+	if (vsCPU && !playerOneisX) {
+		isHumanTurn = false
+		board.classList.remove('playable')
+		window.setTimeout(CPUHandler, 1000)
+	}
+	updateScores()
+	updateScoresLabels()
+	menu.classList.remove('visible')
 }
 function quit() {
 	board.classList.remove('visible')
@@ -272,6 +315,16 @@ function quit() {
 function showBanner(option) {
 	if (option == 'winner') {
 		banner_winner.classList.add('visible')
+		if (vsCPU)
+			if (isHumanTurn) human_wins.classList.add('visible')
+			else cpu_wins.classList.add('visible')
+
+		if (!vsCPU)
+			if ((playerOneisX && isPlayerX) || (!playerOneisX && !isPlayerX)) player1_wins.classList.add('visible')
+			else player2_wins.classList.add('visible')
+
+		if (isPlayerX) x_takes.classList.add('visible')
+		else o_takes.classList.add('visible')
 	}
 	if (option == 'restart') {
 		banner_restart.classList.add('visible')
@@ -280,9 +333,14 @@ function showBanner(option) {
 		banner_tie.classList.add('visible')
 	}
 }
-
 function hideBanners() {
 	for (const banners of banner) {
+		banners.classList.remove('visible')
+	}
+	for (const banners of banner_whowins) {
+		banners.classList.remove('visible')
+	}
+	for (const banners of banner_whotakes) {
 		banners.classList.remove('visible')
 	}
 }

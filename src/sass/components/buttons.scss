@@ -17,4 +17,9 @@ button {
 	&.o-color {
 		@include button-color($oColor, $oColor-dark);
 	}
+
+	&.button__launch {
+		width: 100%;
+		font-size: 1.3rem;
+	}
 }
