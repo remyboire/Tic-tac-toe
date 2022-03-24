@@ -14,7 +14,7 @@ $radius: 10px;
 	transition: box-shadow cubic-bezier(0.23, 1, 0.32, 1) 300ms, transform cubic-bezier(0.23, 1, 0.32, 1) 300ms,
 		background-size cubic-bezier(0.23, 1, 0.32, 1) 300ms;
 }
-@mixin button-color($color: $grey, $color-dark: $grey-dark, $blue-dark: $blue-dark) {
+@mixin button-color($color: $grey, $color-dark: $grey-dark, $blue-dark: $blue) {
 	color: $blue-dark;
 	background-color: $color;
 	box-shadow: 0 6px 0 $color-dark;
