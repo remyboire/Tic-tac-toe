@@ -48,7 +48,6 @@ var isPlayerX = true
 var playerOneisX = true
 var vsCPU = false
 var isHumanTurn = true
-var isInsaneMode = true
 var Xmoves = []
 var Omoves = []
 
@@ -64,7 +63,6 @@ var winingCombinaisons = [
 ]
 
 cards.addEventListener('click', (e) => {
-	// Target elements that are not board container and that are not played
 	if (e.target != cards && !e.target.classList.contains('played') && isHumanTurn) humanHandler(e.target)
 })
 
@@ -104,29 +102,21 @@ for (const button of restart_game) {
 }
 
 function humanHandler(target) {
-	// Place a played marker
 	target.classList.add('played')
 
-	// If player X is playing, add a X marker
-	// else player O is playing, so add a O marker
 	if (isPlayerX) target.classList.add('X')
 	else target.classList.add('O')
 
-	// Get target value
-	// parseInt transform string into number,
-	// Store move played in player's moves
 	if (isPlayerX) Xmoves.push(parseInt(target.getAttribute('data-value')))
 	else Omoves.push(parseInt(target.getAttribute('data-value')))
 
-	// Compare each wining combinaisons with played
 	endOfTurn()
 }
 
 function CPUHandler() {
-	// Determine possible moves, which are moves that are not in Xmoves, neither in Omoves
 	var possibleMoves = new Array()
 	for (var i = 1; i < 10; i++) if (!Xmoves.concat(Omoves).includes(i)) possibleMoves.push(i)
-	// First, find a move randomly
+
 	var choosenMove = possibleMoves[Math.floor(Math.random() * possibleMoves.length)]
 
 	if (isPlayerX) {
@@ -137,62 +127,19 @@ function CPUHandler() {
 		var HumanMoves = [...Xmoves]
 	}
 
-	// Moves to play
-	//		         [1, 2, 3, 4, 5, 6, 7, 8, 9]
-	var responseTo = [0, 7, 9, 3, 9, 3, 9, 7, 3]
-
-	if (!isInsaneMode) {
-		// determine if opponent can win
-		determineMove(HumanMoves, possibleMoves)
-		// determine if CPU can win
-		determineMove(CPUmoves, possibleMoves)
-		playMove(choosenMove)
-	} else {
-		var orientation = 0
-		var toMove = 1 + orientation
-		// determine if CPU can win
-		// determineMove(CPUmoves, possibleMoves)
-		// If it's first move
-		if (possibleMoves.length == 9) {
-			return playMove(1)
-		}
-		// If it's second move
-		if (possibleMoves.length == 7) {
-			console.log(HumanMoves[0])
-			var move = responseTo[HumanMoves[0] - 1]
-			console.log(move)
-			return playMove(move)
-		}
-
-		// console.log(CPUmoves)
-		// console.log(HumanMoves)
-
-		// if (HumanMoves[0] == 2 + orientation) {
-		// 	toMove = 7 + orientation
-		// 	playMove(toMove)
-		// }
-		determineMove(HumanMoves, possibleMoves)
-		// determine if CPU can win
-		determineMove(CPUmoves, possibleMoves)
-		playMove(choosenMove)
-	}
+	determineMove(HumanMoves, possibleMoves)
+	determineMove(CPUmoves, possibleMoves)
+	playMove(choosenMove)
 
 	function determineMove(moveSet, possibleMoves) {
-		// Pour chaque combinaison gagnante
 		for (const combinaison of winingCombinaisons) {
 			var matches = 0
-			// Pour chaque coup joué
 			for (var i = 0; i < moveSet.length; i++) {
-				// On compare la combinaison avec le coup joué
 				if (combinaison.find((element) => element == moveSet[i])) {
 					matches++
-					// If we have two match, try to play the third move
 					if (matches == 2) {
-						// Extracting unplayed move
-						var b = new Set(moveSet)
-						var winingMove = [...combinaison].filter((x) => !b.has(x))
-						var winingMove = parseInt(winingMove)
-						// If unplayed move is possible, play it
+						var twoMoves = new Set(moveSet)
+						var winingMove = parseInt([...combinaison].filter((missingMove) => !twoMoves.has(missingMove)))
 						if (possibleMoves.includes(winingMove)) {
 							return (choosenMove = winingMove)
 						}
@@ -202,38 +149,31 @@ function CPUHandler() {
 		}
 	}
 
-	// Play the move
 	function playMove(move) {
 		document.querySelector("[data-value='" + move + "']").classList.add('played')
 		if (isPlayerX) document.querySelector("[data-value='" + move + "']").classList.add('X')
 		else document.querySelector("[data-value='" + move + "']").classList.add('O')
 
-		// Store move played in player's moves
 		if (isPlayerX) Xmoves.push(move)
 		else Omoves.push(move)
 
 		board_turn.classList.remove('thinking')
-
 		endOfTurn()
 	}
 }
 
 function endOfTurn() {
-	// If player X is playing, compare his moves
-	// Else O is playing, so compare his moves instead
 	if (isPlayerX) var playerMoves = Xmoves
 	else playerMoves = Omoves
 
 	if (vsCPU) board.classList.toggle('playable')
 
-	// For each wining combinaisons possible,
-	// Compare played moves
 	for (const combinaison of winingCombinaisons) {
 		if (combinaison.every((moves) => playerMoves.includes(moves))) {
 			return weHaveAWinner(combinaison)
 		}
 	}
-	// Check for tie, if all card have been played, this is a tie
+
 	var count = 0
 	for (var i = 0; i < card.length; i++) {
 		if (card[i].classList.contains('played')) count++
@@ -245,18 +185,14 @@ function endOfTurn() {
 		return showBanner('tie')
 	} else {
 		changePlayer()
-		// If CPU play and it's his turn, he plays, waiting between 500 an 1000ms
 		if (vsCPU && !isHumanTurn) {
 			board_turn.classList.add('thinking')
-			window.setTimeout(CPUHandler, 10)
-			// window.setTimeout(CPUHandler, Math.floor(Math.random() * (1500 - 750)) + 750)
+			window.setTimeout(CPUHandler, Math.floor(Math.random() * 750) + 750)
 		}
 	}
 }
 
 function weHaveAWinner(combinaison) {
-	// If we have a winner
-	// highlight wining cards
 	var i = 1
 	for (const winingCards of combinaison) {
 		setTimeout(function () {
@@ -265,8 +201,6 @@ function weHaveAWinner(combinaison) {
 		++i
 	}
 	setTimeout(function () {
-		// Si player win
-		// wins ++
 		if (isPlayerX) Xwins++
 		else Owins++
 		showBanner('winner')
@@ -319,23 +253,17 @@ function restart() {
 		card.classList.remove('O')
 	})
 	if (opponent == 'CPU' && isHumanTurn == false) {
-		window.setTimeout(CPUHandler, 10)
-		// window.setTimeout(CPUHandler, 1000)
+		window.setTimeout(CPUHandler, 1000)
 	}
 }
 function launch(data_opponent) {
-	board.classList.add('visible')
-	board.classList.add('playable')
+	board.classList.add('visible', 'playable', 'X-turn')
 	board.classList.remove('O-turn')
-	board.classList.add('X-turn')
 	isPlayerX = true
 	Xmoves = []
 	Omoves = []
 	card.forEach((card) => {
-		card.classList.remove('played')
-		card.classList.remove('wins')
-		card.classList.remove('X')
-		card.classList.remove('O')
+		card.classList.remove('played', 'wins', 'X', 'O')
 	})
 	Xwins = 0
 	Owins = 0
@@ -347,8 +275,7 @@ function launch(data_opponent) {
 	if (vsCPU && !playerOneisX) {
 		isHumanTurn = false
 		board.classList.remove('playable')
-		window.setTimeout(CPUHandler, 10)
-		// window.setTimeout(CPUHandler, 1000)
+		window.setTimeout(CPUHandler, 1000)
 	}
 	updateScores()
 	updateScoresLabels()
