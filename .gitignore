@@ -16,3 +16,7 @@
 .prettierignore
 node_modules/
 .vscode
+
+.gitignore
+.gitattibutes
+package.json
