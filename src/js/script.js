@@ -1,17 +1,3 @@
-// Choose player 1 mark
-// Chose if VS CPU OR VS PLAYER
-
-// Round start
-// Player place a mark
-// Display mark
-// If WIN -> WIN
-// change player -> Round start
-
-// WIN
-// Display win screen
-// Add 1 point to the winner
-// Play again ?
-// If yes -> Round start
 let menu = document.querySelector('.menu')
 let logo = document.querySelector('.board__logo')
 
@@ -62,7 +48,7 @@ var isPlayerX = true
 var playerOneisX = true
 var vsCPU = false
 var isHumanTurn = true
-
+var isInsaneMode = true
 var Xmoves = []
 var Omoves = []
 
@@ -144,16 +130,50 @@ function CPUHandler() {
 	var choosenMove = possibleMoves[Math.floor(Math.random() * possibleMoves.length)]
 
 	if (isPlayerX) {
+		var CPUmoves = [...Xmoves]
+		var HumanMoves = [...Omoves]
+	} else {
+		var CPUmoves = [...Omoves]
+		var HumanMoves = [...Xmoves]
+	}
+
+	// Moves to play
+	//		         [1, 2, 3, 4, 5, 6, 7, 8, 9]
+	var responseTo = [0, 7, 9, 3, 9, 3, 9, 7, 3]
+
+	if (!isInsaneMode) {
 		// determine if opponent can win
-		determineMove(Omoves, possibleMoves)
+		determineMove(HumanMoves, possibleMoves)
 		// determine if CPU can win
-		determineMove(Xmoves, possibleMoves)
+		determineMove(CPUmoves, possibleMoves)
 		playMove(choosenMove)
 	} else {
-		// determine if opponent can win
-		determineMove(Xmoves, possibleMoves)
+		var orientation = 0
+		var toMove = 1 + orientation
 		// determine if CPU can win
-		determineMove(Omoves, possibleMoves)
+		// determineMove(CPUmoves, possibleMoves)
+		// If it's first move
+		if (possibleMoves.length == 9) {
+			return playMove(1)
+		}
+		// If it's second move
+		if (possibleMoves.length == 7) {
+			console.log(HumanMoves[0])
+			var move = responseTo[HumanMoves[0] - 1]
+			console.log(move)
+			return playMove(move)
+		}
+
+		// console.log(CPUmoves)
+		// console.log(HumanMoves)
+
+		// if (HumanMoves[0] == 2 + orientation) {
+		// 	toMove = 7 + orientation
+		// 	playMove(toMove)
+		// }
+		determineMove(HumanMoves, possibleMoves)
+		// determine if CPU can win
+		determineMove(CPUmoves, possibleMoves)
 		playMove(choosenMove)
 	}
 
@@ -228,7 +248,8 @@ function endOfTurn() {
 		// If CPU play and it's his turn, he plays, waiting between 500 an 1000ms
 		if (vsCPU && !isHumanTurn) {
 			board_turn.classList.add('thinking')
-			window.setTimeout(CPUHandler, Math.floor(Math.random() * (1500 - 750)) + 750)
+			window.setTimeout(CPUHandler, 10)
+			// window.setTimeout(CPUHandler, Math.floor(Math.random() * (1500 - 750)) + 750)
 		}
 	}
 }
@@ -298,7 +319,8 @@ function restart() {
 		card.classList.remove('O')
 	})
 	if (opponent == 'CPU' && isHumanTurn == false) {
-		window.setTimeout(CPUHandler, 1000)
+		window.setTimeout(CPUHandler, 10)
+		// window.setTimeout(CPUHandler, 1000)
 	}
 }
 function launch(data_opponent) {
@@ -325,7 +347,8 @@ function launch(data_opponent) {
 	if (vsCPU && !playerOneisX) {
 		isHumanTurn = false
 		board.classList.remove('playable')
-		window.setTimeout(CPUHandler, 1000)
+		window.setTimeout(CPUHandler, 10)
+		// window.setTimeout(CPUHandler, 1000)
 	}
 	updateScores()
 	updateScoresLabels()
