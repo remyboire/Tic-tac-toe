@@ -7,12 +7,12 @@ let board_turn = document.querySelector('.board__turn')
 let cards = document.querySelector('.board__cards')
 let card = document.querySelectorAll('.board__card')
 
-let Xscore = document.querySelector('.board__score--X output')
-let XscoreLabel = document.querySelector('.board__score--X label')
-let OscoreLabel = document.querySelector('.board__score--O label')
+let Xscore = document.querySelector('.board__score--X .output')
+let XscoreLabel = document.querySelector('.board__score--X .label')
+let OscoreLabel = document.querySelector('.board__score--O .label')
 
-let Oscore = document.querySelector('.board__score--O output')
-let TieScore = document.querySelector('.board__score--tie output')
+let Oscore = document.querySelector('.board__score--O .output')
+let TieScore = document.querySelector('.board__score--tie .output')
 
 let banner = document.querySelectorAll('.banner')
 let banner_winner = document.querySelector('.banner__winner')
