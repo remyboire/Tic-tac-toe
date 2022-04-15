@@ -49,10 +49,10 @@ Users should be able to:
 
 ### What I learned
 
-Altought it is not perfect, it has been a good way to learn a bit of algorithmic thinking.
+Although it is not perfect, it has been a good way to learn a bit of algorithmic thinking.
 I tried to make the computer play smart and block the player's moves.
 CPU plays randomly, but if its opponent can win, it will block it, otherwise, if CPU can win, it will play to win.
-This is basic but seems to get people into enough trouble.
+This is basic, but seems to get people into enough trouble.
 
 
 ### Continued development
