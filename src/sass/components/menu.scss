@@ -59,31 +59,41 @@
 			&::before {
 				left: 0;
 			}
-			& .selectMark--x svg {
-				fill: $blue;
+			& .selectMark--x {
+				background: $blue;
 			}
 		}
 		&.o-picked {
 			&::before {
 				left: 50%;
 			}
-			& .selectMark--o svg {
-				fill: $blue;
+			& .selectMark--o {
+				background: $blue;
 			}
 		}
 		& .selectMark--x,
 		& .selectMark--o {
-			padding: 0.7rem;
+			margin: 0.7rem;
 			display: flex;
-			max-height: 2rem;
+			min-height: 2rem;
 			cursor: pointer;
 			width: 50%;
 			z-index: 10;
-			& svg {
-				fill: $grey;
-				height: 100%;
-				margin: auto;
-			}
+			background: $grey;
+		}
+		& .selectMark--x {
+			-webkit-mask: url(./../images/icon-x-default.svg);
+			mask: url(./../images/icon-x-default.svg);
+			mask-size: contain;
+			mask-repeat: no-repeat;
+			mask-position: center;
+		}
+		& .selectMark--o {
+			-webkit-mask: url(./../images/icon-o-default.svg);
+			mask: url(./../images/icon-o-default.svg);
+			mask-size: contain;
+			mask-repeat: no-repeat;
+			mask-position: center;
 		}
 	}
 }

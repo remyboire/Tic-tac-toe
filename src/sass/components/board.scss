@@ -10,12 +10,15 @@
 	&__cards {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
+		grid-auto-rows: 1fr;
 		grid-column-gap: 20px;
 		grid-row-gap: 25px;
 	}
 
 	&__card {
 		border-radius: $radius;
+		padding-top: 100%;
+		height: 0;
 		aspect-ratio: 1;
 		background-color: $blue-light;
 		box-shadow: 0 10px 0 $blue-dark;
