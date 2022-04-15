@@ -217,9 +217,9 @@ function changePlayer() {
 }
 
 function updateScores() {
-	Xscore.value = Xwins
-	Oscore.value = Owins
-	TieScore.value = Ties
+	Xscore.innerHTML = Xwins
+	Oscore.innerHTML = Owins
+	TieScore.innerHTML = Ties
 }
 
 function updateScoresLabels() {
